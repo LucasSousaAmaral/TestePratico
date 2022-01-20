@@ -12,8 +12,8 @@ using MinhaAgendaMinhaVidaAPI.Context;
 namespace MinhaAgendaMinhaVidaAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220120010535_Initial")]
-    partial class Initial
+    [Migration("20220120031952_ResetMigration")]
+    partial class ResetMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,7 +45,7 @@ namespace MinhaAgendaMinhaVidaAPI.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("AgendaId");
@@ -53,6 +53,16 @@ namespace MinhaAgendaMinhaVidaAPI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Agendas");
+
+                    b.HasData(
+                        new
+                        {
+                            AgendaId = 1,
+                            Data = new DateTime(2022, 1, 20, 0, 19, 52, 400, DateTimeKind.Local).AddTicks(8334),
+                            Description = "Anotações sobre dezembro",
+                            Title = "Agenda Dezembro",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("MinhaAgendaMinhaVidaAPI.Models.User", b =>
@@ -81,13 +91,35 @@ namespace MinhaAgendaMinhaVidaAPI.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Login = "LucasAmaral",
+                            Name = "Amaral",
+                            Password = "Amaral",
+                            Role = 0
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Login = "MateusAmaral",
+                            Name = "Mateus",
+                            Password = "Mateus",
+                            Role = 1
+                        });
                 });
 
             modelBuilder.Entity("MinhaAgendaMinhaVidaAPI.Models.Agenda", b =>
                 {
-                    b.HasOne("MinhaAgendaMinhaVidaAPI.Models.User", null)
+                    b.HasOne("MinhaAgendaMinhaVidaAPI.Models.User", "User")
                         .WithMany("Agendas")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MinhaAgendaMinhaVidaAPI.Models.User", b =>

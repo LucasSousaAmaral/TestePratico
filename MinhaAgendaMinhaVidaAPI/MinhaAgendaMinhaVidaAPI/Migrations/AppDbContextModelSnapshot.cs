@@ -43,7 +43,7 @@ namespace MinhaAgendaMinhaVidaAPI.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("AgendaId");
@@ -56,9 +56,10 @@ namespace MinhaAgendaMinhaVidaAPI.Migrations
                         new
                         {
                             AgendaId = 1,
-                            Data = new DateTime(2022, 1, 19, 22, 47, 4, 971, DateTimeKind.Local).AddTicks(1407),
+                            Data = new DateTime(2022, 1, 20, 0, 19, 52, 400, DateTimeKind.Local).AddTicks(8334),
                             Description = "Anotações sobre dezembro",
-                            Title = "Agenda Dezembro"
+                            Title = "Agenda Dezembro",
+                            UserId = 1
                         });
                 });
 
@@ -110,9 +111,13 @@ namespace MinhaAgendaMinhaVidaAPI.Migrations
 
             modelBuilder.Entity("MinhaAgendaMinhaVidaAPI.Models.Agenda", b =>
                 {
-                    b.HasOne("MinhaAgendaMinhaVidaAPI.Models.User", null)
+                    b.HasOne("MinhaAgendaMinhaVidaAPI.Models.User", "User")
                         .WithMany("Agendas")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MinhaAgendaMinhaVidaAPI.Models.User", b =>
