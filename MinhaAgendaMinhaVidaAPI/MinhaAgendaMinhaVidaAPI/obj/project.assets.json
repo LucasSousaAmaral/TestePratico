@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net5.0": {
+    "net6.0": {
       "Microsoft.Extensions.ApiDescription.Server/3.0.0": {
         "type": "package",
         "build": {
@@ -188,7 +188,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net5.0": [
+    "net6.0": [
       "Swashbuckle.AspNetCore >= 5.6.3"
     ]
   },
@@ -198,26 +198,26 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
       "projectName": "MinhaAgendaMinhaVidaAPI",
-      "projectPath": "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
+      "projectPath": "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
       "packagesPath": "C:\\Users\\Pichau\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\obj\\",
+      "outputPath": "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Pichau\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net5.0"
+        "net6.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "net6.0": {
+          "targetAlias": "net6.0",
           "projectReferences": {}
         }
       },
@@ -228,8 +228,8 @@
       }
     },
     "frameworks": {
-      "net5.0": {
-        "targetAlias": "net5.0",
+      "net6.0": {
+        "targetAlias": "net6.0",
         "dependencies": {
           "Swashbuckle.AspNetCore": {
             "target": "Package",
