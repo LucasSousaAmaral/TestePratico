@@ -13,12 +13,10 @@ namespace MinhaAgendaMinhaVidaAPI.Controllers
     public class AgendaController : ControllerBase
     {
         private readonly IAgendaService _agendaService;
-        private readonly IUserService _userService;
 
-        public AgendaController(IAgendaService agendaService, IUserService userService)
+        public AgendaController(IAgendaService agendaService)
         {
             _agendaService = agendaService;
-            _userService = userService;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -29,11 +27,6 @@ namespace MinhaAgendaMinhaVidaAPI.Controllers
             try
             {
                 var agendas = await _agendaService.GetAgendas();
-
-                foreach (var agenda in agendas)
-                {
-                    agenda.User = await _userService.GetUser(agenda.UserId);
-                }
 
                 return Ok(agendas);
             }
@@ -57,12 +50,9 @@ namespace MinhaAgendaMinhaVidaAPI.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    agenda.User = await _userService.GetUser(agenda.UserId);
-                }
 
                 return Ok(agenda);
+
             }
             catch (Exception ex)
             {
@@ -83,13 +73,6 @@ namespace MinhaAgendaMinhaVidaAPI.Controllers
                 if (agendas == null)
                 {
                     return NotFound();
-                }
-                else
-                {
-                    foreach (var agenda in agendas)
-                    {
-                        agenda.User = await _userService.GetUser(agenda.UserId);
-                    }
                 }
 
                 return Ok(agendas);

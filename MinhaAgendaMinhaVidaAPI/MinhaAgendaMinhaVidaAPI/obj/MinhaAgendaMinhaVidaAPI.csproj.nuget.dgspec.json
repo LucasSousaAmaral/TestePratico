@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj": {}
+    "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj": {
+    "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
         "projectName": "MinhaAgendaMinhaVidaAPI",
-        "projectPath": "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
+        "projectPath": "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
         "packagesPath": "C:\\Users\\Pichau\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\obj\\",
+        "outputPath": "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Pichau\\AppData\\Roaming\\NuGet\\NuGet.Config",

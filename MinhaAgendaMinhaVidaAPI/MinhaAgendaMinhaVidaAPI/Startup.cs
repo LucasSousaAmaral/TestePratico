@@ -37,7 +37,6 @@ namespace MinhaAgendaMinhaVidaAPI
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddScoped<IUserService, UserService>();
             services.AddScoped<Services.IAgendaService, AgendaService>();
 
             services.AddControllers();

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7G0ZhP2srEFP96yzZV+JR+fruYQsVcUmB0JZ0AItvm4fQQGt+W3fkRA5tWOY62MZLoeuGVZRk/7mZODiCDWdLA==",
+  "dgSpecHash": "O9rg9dcu8uqEhsjvZ0Pzto9syK+UTr7c+Y+Cqi3SgGpBJXVezLPTmEl7Xfp6y8651o/Wf7L+uRCQ/P43IeexlA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Pichau\\Source\\Repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
+  "projectFilePath": "C:\\Users\\Pichau\\source\\repos\\LucasSousaAmaral\\TestePratico\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI\\MinhaAgendaMinhaVidaAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Pichau\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Pichau\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
