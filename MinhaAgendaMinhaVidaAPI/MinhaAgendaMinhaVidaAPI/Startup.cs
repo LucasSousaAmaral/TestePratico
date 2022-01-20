@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MinhaAgendaMinhaVidaAPI.Context;
+using MinhaAgendaMinhaVidaAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,8 @@ namespace MinhaAgendaMinhaVidaAPI
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 
             });
+
+            services.AddScoped<IUserService, UserService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
