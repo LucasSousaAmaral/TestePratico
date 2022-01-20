@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MinhaAgendaMinhaVidaAPI.Context;
 using MinhaAgendaMinhaVidaAPI.Models;
+using MinhaAgendaMinhaVidaAPI.Services;
 
 namespace MinhaAgendaMinhaVidaAPI.Controllers
 {
@@ -14,107 +12,158 @@ namespace MinhaAgendaMinhaVidaAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAgendaService _agendaService;
+        private readonly IUserService _userService;
 
-        public UsersController(AppDbContext context)
+        public UsersController(IAgendaService agendaService, IUserService userService)
         {
-            _context = context;
+            _agendaService = agendaService;
+            _userService = userService;
         }
 
-        // GET: api/Users
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            var users = await _context.Users.ToListAsync();
-
-            foreach (var user in users)
+            try
             {
-                user.Agendas = await _context.Agendas.Where(a => a.UserId == user.UserId).ToListAsync();
-            }
+                var users = await _userService.GetUsers();
 
-            return users;
+                foreach (var user in users)
+                {
+                    user.Agendas.Add(await _agendaService.GetAgenda(user.UserId));
+                }
+
+                return Ok(users);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error getting 'users'");
+            }
 
         }
 
-        // GET: api/Users/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                user.Agendas = await _context.Agendas.Where(a => a.UserId == user.UserId).ToListAsync();
-            }
-
-            return user;
-        }
-
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
-        {
-            if (id != user.UserId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
+                var user = await _userService.GetUser(id);
+
+                if (user == null)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    throw;
+                    user.Agendas.Add(await _agendaService.GetAgenda(user.UserId));
+                }
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("UserByName")]
+        public async Task<ActionResult<User>> GetUserByName(string name)
+        {
+            try
+            {
+                var users = await _userService.GetUserByName(name);
+
+                if (users == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    foreach (var user in users)
+                    {
+                        user.Agendas.Add(await _agendaService.GetAgenda(user.UserId));
+                    }
+                }
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut]
+        public async Task<IActionResult> EditUser(int id, [FromBody] User user)
+        {
+            try
+            {
+                if (user.UserId == id)
+                {
+                    await _userService.UpdateUser(user);
+                    return Ok($"User with Id : {id}, sucessfully updated.");
+                }
+                else
+                {
+                    return BadRequest("Not valid data");
                 }
             }
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> CreateUser(User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            try
+            {
+                await _userService.CreateUser(user);
+                return CreatedAtRoute(nameof(GetUser), new { id = user.UserId }, user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
         }
 
-        // DELETE: api/Users/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await _userService.GetUser(id);
+
+                if (user != null)
+                {
+                    await _userService.DeleteUser(user);
+                    return Ok($"User with Id : {id}, sucessfully deleted.");
+                }
+                else
+                {
+                    return NotFound($"User with Id: {id}, not found.");
+                }
             }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.UserId == id);
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
         }
     }
 }

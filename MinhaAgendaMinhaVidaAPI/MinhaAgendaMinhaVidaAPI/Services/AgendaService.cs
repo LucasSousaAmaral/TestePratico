@@ -9,9 +9,9 @@ namespace MinhaAgendaMinhaVidaAPI.Services
 {
     public class AgendaService : IAgendaService
     {
-        private readonly AppDbContext _context;
+        private readonly Context.AppDbContext _context;
 
-        public AgendaService(AppDbContext context)
+        public AgendaService(Context.AppDbContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace MinhaAgendaMinhaVidaAPI.Services
         {
             return await _context.Agendas.ToListAsync();
         }
-        public async Task<Agenda> GetAgenda<T>(int id)
+        public async Task<Agenda> GetAgenda(int id)
         {
             return await _context.Agendas.FindAsync(id);
         }

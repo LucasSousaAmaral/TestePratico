@@ -29,7 +29,7 @@ namespace MinhaAgendaMinhaVidaAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<Context.AppDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
 
@@ -38,7 +38,7 @@ namespace MinhaAgendaMinhaVidaAPI
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAgendaService, AgendaService>();
+            services.AddScoped<Services.IAgendaService, AgendaService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

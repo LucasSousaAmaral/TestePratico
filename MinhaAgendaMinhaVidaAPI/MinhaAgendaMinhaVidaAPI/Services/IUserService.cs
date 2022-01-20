@@ -8,7 +8,7 @@ namespace MinhaAgendaMinhaVidaAPI.Services
     {
         Task<IEnumerable<User>> GetUsers();
 
-        Task<User> GetUser<T>(int id);
+        Task<User> GetUser(int id);
 
         Task<IEnumerable<User>> GetUserByName(string name);
 

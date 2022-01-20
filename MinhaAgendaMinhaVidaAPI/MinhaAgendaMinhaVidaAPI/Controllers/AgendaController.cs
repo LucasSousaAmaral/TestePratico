@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MinhaAgendaMinhaVidaAPI.Context;
 using MinhaAgendaMinhaVidaAPI.Models;
+using MinhaAgendaMinhaVidaAPI.Services;
 
 namespace MinhaAgendaMinhaVidaAPI.Controllers
 {
@@ -14,106 +12,157 @@ namespace MinhaAgendaMinhaVidaAPI.Controllers
     [ApiController]
     public class AgendaController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAgendaService _agendaService;
+        private readonly IUserService _userService;
 
-        public AgendaController(AppDbContext context)
+        public AgendaController(IAgendaService agendaService, IUserService userService)
         {
-            _context = context;
+            _agendaService = agendaService;
+            _userService = userService;
         }
 
-        // GET: api/Agenda
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Agenda>>> GetAgendas()
+        public async Task<ActionResult<IAsyncEnumerable<Agenda>>> GetAgendas()
         {
-            var agendas = await _context.Agendas.ToListAsync();
-
-            foreach (var agenda in agendas)
+            try
             {
-                agenda.User = _context.Users.FirstOrDefault(u => u.UserId == agenda.UserId);
-            }
+                var agendas = await _agendaService.GetAgendas();
 
-            return agendas;
+                foreach (var agenda in agendas)
+                {
+                    agenda.User = await _userService.GetUser(agenda.UserId);
+                }
+
+                return Ok(agendas);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error getting 'agendas'");
+            }
         }
 
-        // GET: api/Agenda/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Agenda>> GetAgenda(int id)
         {
-            var agenda = await _context.Agendas.FindAsync(id);
-
-            if (agenda == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                agenda.User = _context.Users.FirstOrDefault(u => u.UserId == agenda.UserId);
-            }
-
-            return agenda;
-        }
-
-        // PUT: api/Agenda/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAgenda(int id, Agenda agenda)
-        {
-            if (id != agenda.AgendaId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(agenda).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AgendaExists(id))
+                var agenda = await _agendaService.GetAgenda(id);
+
+                if (agenda == null)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    throw;
+                    agenda.User = await _userService.GetUser(agenda.UserId);
+                }
+
+                return Ok(agenda);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("AgendaByTitle")]
+        public async Task<ActionResult<Agenda>> GetAgendaByTitle(string title)
+        {
+            try
+            {
+                var agendas = await _agendaService.GetAgendaByTitle(title);
+
+                if (agendas == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    foreach (var agenda in agendas)
+                    {
+                        agenda.User = await _userService.GetUser(agenda.UserId);
+                    }
+                }
+
+                return Ok(agendas);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut]
+        public async Task<IActionResult> EditAgenda(int id, [FromBody] Agenda agenda)
+        {
+            try
+            {
+                if (agenda.AgendaId == id)
+                {
+                    await _agendaService.UpdateAgenda(agenda);
+                    return Ok($"Agenda with Id : {id}, sucessfully updated.");
+                }
+                else 
+                {
+                    return BadRequest("Not valid data");
                 }
             }
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
         }
 
-        // POST: api/Agenda
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<ActionResult<Agenda>> PostAgenda(Agenda agenda)
+        public async Task<ActionResult<Agenda>> CreateAgenda(Agenda agenda)
         {
-            _context.Agendas.Add(agenda);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAgenda", new { id = agenda.AgendaId }, agenda);
+            try
+            {
+                await _agendaService.CreateAgenda(agenda);
+                return CreatedAtRoute(nameof(GetAgenda), new { id = agenda.AgendaId }, agenda);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
         }
 
-        // DELETE: api/Agenda/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAgenda(int id)
         {
-            var agenda = await _context.Agendas.FindAsync(id);
-            if (agenda == null)
+            try
             {
-                return NotFound();
+                var agenda = await _agendaService.GetAgenda(id);
+
+                if (agenda != null)
+                {
+                    await _agendaService.DeleteAgenda(agenda);
+                    return Ok($"Agenda with Id : {id}, sucessfully deleted.");
+                }
+                else
+                {
+                    return NotFound($"Agenda with Id: {id}, not found.");
+                }
             }
-
-            _context.Agendas.Remove(agenda);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool AgendaExists(int id)
-        {
-            return _context.Agendas.Any(e => e.AgendaId == id);
+            catch (Exception ex)
+            {
+                return BadRequest($"Invalid Request : {ex}");
+            }
         }
     }
 }

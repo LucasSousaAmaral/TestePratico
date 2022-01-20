@@ -9,9 +9,9 @@ namespace MinhaAgendaMinhaVidaAPI.Services
 {
     public class UserService : IUserService
     {
-        private readonly AppDbContext _context;
+        private readonly Context.AppDbContext _context;
 
-        public UserService(AppDbContext context)
+        public UserService(Context.AppDbContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace MinhaAgendaMinhaVidaAPI.Services
         {
             return await _context.Users.ToListAsync();
         }
-        public async Task<User> GetUser<T>(int id)
+        public async Task<User> GetUser(int id)
         {
             return await _context.Users.FindAsync(id);
         }

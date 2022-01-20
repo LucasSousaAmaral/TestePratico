@@ -9,7 +9,7 @@ namespace MinhaAgendaMinhaVidaAPI.Services
     {
         Task<IEnumerable<Agenda>> GetAgendas();
 
-        Task<Agenda> GetAgenda<T>(int id);
+        Task<Agenda> GetAgenda(int id);
 
         Task<IEnumerable<Agenda>> GetAgendaByTitle(string title);
 
