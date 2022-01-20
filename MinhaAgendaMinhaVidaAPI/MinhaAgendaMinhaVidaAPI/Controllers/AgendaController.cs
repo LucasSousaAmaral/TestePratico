@@ -25,7 +25,14 @@ namespace MinhaAgendaMinhaVidaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Agenda>>> GetAgendas()
         {
-            return await _context.Agendas.ToListAsync();
+            var agendas = await _context.Agendas.ToListAsync();
+
+            foreach (var agenda in agendas)
+            {
+                agenda.User = _context.Users.FirstOrDefault(u => u.UserId == agenda.UserId);
+            }
+
+            return agendas;
         }
 
         // GET: api/Agenda/5
@@ -37,6 +44,10 @@ namespace MinhaAgendaMinhaVidaAPI.Controllers
             if (agenda == null)
             {
                 return NotFound();
+            }
+            else 
+            {
+                agenda.User = _context.Users.FirstOrDefault(u => u.UserId == agenda.UserId);
             }
 
             return agenda;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhaAgendaMinhaVidaAPI.Models;
+using System.Collections.Generic;
 
 namespace MinhaAgendaMinhaVidaAPI.Context
 {
@@ -20,8 +21,7 @@ namespace MinhaAgendaMinhaVidaAPI.Context
                     Name = "Amaral",
                     Login = "LucasAmaral",
                     Password = "Amaral",
-                    Role = Role.Admin,
-                    Agendas = null
+                    Role = Role.Admin
 
 
                 },
@@ -31,8 +31,7 @@ namespace MinhaAgendaMinhaVidaAPI.Context
                     Name = "Mateus",
                     Login = "MateusAmaral",
                     Password = "Mateus",
-                    Role = Role.Common,
-                    Agendas = null
+                    Role = Role.Common
                 }
 
                 );
@@ -44,6 +43,7 @@ namespace MinhaAgendaMinhaVidaAPI.Context
                     Title = "Agenda Dezembro",
                     Description = "Anotações sobre dezembro",
                     Data = System.DateTime.Now,
+                    UserId = 1
                 }
 
                 );

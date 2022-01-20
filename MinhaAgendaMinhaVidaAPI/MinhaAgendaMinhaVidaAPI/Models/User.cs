@@ -21,6 +21,8 @@ namespace MinhaAgendaMinhaVidaAPI.Models
         [Required]
         public string Password { get; set; }
         public Role? Role { get; set; }
+
+        [ForeignKey("UserId")]
         public ICollection<Agenda> Agendas { get; set; }
     }
 }
