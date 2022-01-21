@@ -18,7 +18,7 @@ namespace MinhaAgendaMinhaVidaAPI.Context
                     AgendaId = 1,
                     Title = "Agenda Dezembro",
                     Description = "Anotações sobre dezembro",
-                    Data = System.DateTime.Now
+                    CreationDate = System.DateTime.Now
                 }
 
                 );

@@ -18,6 +18,6 @@ namespace MinhaAgendaMinhaVidaAPI.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Data { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

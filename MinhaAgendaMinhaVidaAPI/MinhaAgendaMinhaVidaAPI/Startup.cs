@@ -35,6 +35,13 @@ namespace MinhaAgendaMinhaVidaAPI
 
             });
 
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddScoped<Services.IAgendaService, AgendaService>();
@@ -55,6 +62,11 @@ namespace MinhaAgendaMinhaVidaAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MinhaAgendaMinhaVidaAPI v1"));
             }
+
+            //CORS
+            app.UseCors(option => option.AllowAnyOrigin());
+            app.UseCors(option => option.AllowAnyMethod());
+            app.UseCors(option => option.AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
